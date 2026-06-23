@@ -98,3 +98,42 @@ class Dragao(Monstro):
             xp=500,
             ouro=200
         )
+class Urso(Monstro):
+
+     def __init__(self):
+
+        super().__init__(
+            nome="Urso Tibers",
+            vida=180,
+            ataque=24,
+            defesa=10,
+            nivel=6,
+            xp=200,
+            ouro=60
+        )
+class Monge(Monstro):
+
+     def __init__(self):
+
+        super().__init__(
+            nome="Monge cego",
+            vida=120,
+            ataque=18,
+            defesa=8,
+            nivel=4,
+            xp=80,
+            ouro=35
+        )
+class Troglodita(Monstro):
+
+    def __init__(self):
+
+        super().__init__(
+            nome="Troglodita esquecido",
+            vida=400,
+            ataque=45,
+            defesa=20,
+            nivel=12,
+            xp=600,
+            ouro=260
+        )
