@@ -18,9 +18,12 @@ class Personagem:
 
         self.nivel = 1
         self.xp = 0
+        self.xp_proximo_nivel = 100
 
         self.inventario = []
-        self.habilidades = set()
+
+        self.habilidades = {}
+        self.escolhas = {}
 
     def atacar(self, inimigo):
 
@@ -30,33 +33,33 @@ class Personagem:
 
             dano *= 2
 
-            print("⚡ CRÍTICO!")
+            print("CRÍTICO!")
 
         inimigo.receber_dano(dano)
 
     def receber_dano(self, dano):
 
-        self.vida -= dano
+        if self.esquivar():
+
+            print(f"{self.nome} desviou do ataque!")
+
+            return
+
+        dano_final = dano - self.defesa
+
+        if dano_final < 0:
+            dano_final = 0
+
+        self.vida -= dano_final
+
+        if self.vida < 0:
+            self.vida = 0
+
+        print(f"{self.nome} recebeu {dano_final} de dano!")
 
     def esta_vivo(self):
 
         return self.vida > 0
-
-    def mostrar_status(self):
-
-        print(f"""
-        Nome: {self.nome}
-
-        Vida: {self.vida}
-        Mana: {self.mana}
-
-        Força: {self.forca}
-        Agilidade: {self.agilidade}
-        Inteligência: {self.inteligencia}
-
-        Habilidades:
-        {self.habilidades}
-        """)
 
     def calcular_critico(self):
 
@@ -70,15 +73,81 @@ class Personagem:
 
         return chance <= self.agilidade * 2
 
-    def receber_dano(self, dano):
+    def ganhar_xp(self, quantidade):
 
-        if self.esquivar():
+        self.xp += quantidade
 
-            print(f"{self.nome} desviou do ataque!")
+        print(f"{self.nome} ganhou {quantidade} XP!")
 
+        self.verificar_level_up()
+
+    def verificar_level_up(self):
+
+        while self.xp >= self.xp_proximo_nivel:
+
+            self.xp -= self.xp_proximo_nivel
+
+            self.nivel += 1
+
+            self.xp_proximo_nivel += 50
+
+            self.vida += 20
+            self.mana += 10
+
+            print(f"{self.nome} subiu para o nível {self.nivel}!")
+
+    def adicionar_item(self, item):
+
+        self.inventario.append(item)
+
+        print(f"{item} adicionado ao inventário.")
+
+    def mostrar_inventario(self):
+
+        print("\n=== INVENTÁRIO ===")
+
+        if not self.inventario:
+
+            print("Inventário vazio.")
             return
 
-        self.vida -= dano
+        for item in self.inventario:
 
-        if self.vida < 0:
-            self.vida = 0
+            print(f"- {item}")
+
+    def mostrar_habilidades(self):
+
+        print("\n=== HABILIDADES ===")
+
+        if not self.habilidades:
+
+            print("Nenhuma habilidade.")
+            return
+
+        for nome, dados in self.habilidades.items():
+
+            custo = dados.get("mana", 0)
+
+            print(f"{nome} | Mana: {custo}")
+
+    def mostrar_status(self):
+
+        print(f"""
+================================
+
+Nome: {self.nome}
+
+Nível: {self.nivel}
+XP: {self.xp}/{self.xp_proximo_nivel}
+
+Vida: {self.vida}
+Mana: {self.mana}
+
+Força: {self.forca}
+Agilidade: {self.agilidade}
+Inteligência: {self.inteligencia}
+
+Defesa: {self.defesa}
+
+================================
+""")

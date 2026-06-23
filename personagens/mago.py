@@ -3,49 +3,26 @@ from personagens.personagem import Personagem
 
 class Mago(Personagem):
 
+    def __init__(self, nome, forca, agilidade, inteligencia):
 
-    def __init__(
-        self,
-        nome,
-        forca,
-        agilidade,
-        inteligencia
-    ):
-
-        super().__init__(
-            nome,
-            forca,
-            agilidade,
-            inteligencia
-        )
-
+        super().__init__(nome, forca, agilidade, inteligencia)
 
         self.mana += 100
 
+        self.habilidades["Bola de Fogo"] = {"dano": 4, "mana": 20}
 
-        self.habilidades.add(
-            "Bola de Fogo"
-        )
-
+        self.habilidades["Cura"] = {"cura": 30, "mana": 15}
 
     def atacar(self, inimigo):
 
-        if self.mana < 20:
+        dano = self.inteligencia
 
-            raise Exception(
-                "Mana insuficiente"
-            )
+        if self.calcular_critico():
 
+            dano *= 2
 
-        dano = self.inteligencia * 3
+            print("CRÍTICO!")
 
-
-        self.mana -= 20
-
-
-        print(
-            f"{self.nome} lançou Bola de Fogo!"
-        )
-
+        print(f"{self.nome} realizou um ataque mágico!")
 
         inimigo.receber_dano(dano)

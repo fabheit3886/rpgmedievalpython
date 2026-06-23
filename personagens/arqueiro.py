@@ -7,11 +7,21 @@ class Arqueiro(Personagem):
 
         super().__init__(nome, forca, agilidade, inteligencia)
 
-        self.habilidades.add("Tiro Preciso")
+        self.defesa += 3
+
+        self.habilidades["Tiro Preciso"] = {"dano": 3, "mana": 5}
+
+        self.habilidades["Rajada de Flechas"] = {"dano": 5, "mana": 20}
 
     def atacar(self, inimigo):
 
-        dano = self.agilidade * 2
+        dano = self.agilidade
+
+        if self.calcular_critico():
+
+            dano *= 2
+
+            print("CRÍTICO!")
 
         print(f"{self.nome} disparou uma flecha!")
 

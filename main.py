@@ -1,23 +1,13 @@
 from personagens.criador_personagens import CriadorPersonagem
-from combate.monstros import Goblin
-from combate.batalha import Batalha
-
+from mundo.historia import Historia
 
 
 criador = CriadorPersonagem()
 
-
 jogador = criador.criar()
 
-
-goblin = Goblin()
-
-
-
-batalha = Batalha(
-    jogador,
-    goblin
+historia = Historia(
+    jogador
 )
 
-
-batalha.iniciar()
+historia.iniciar()

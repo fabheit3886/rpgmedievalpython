@@ -8,7 +8,7 @@ class Batalha:
     def iniciar(self):
 
         print("======================")
-        print(" ⚔ INÍCIO DA BATALHA ⚔")
+        print(" INÍCIO DA BATALHA ")
         print("======================")
 
         while self.jogador.esta_vivo() and self.monstro.esta_vivo():
@@ -25,18 +25,24 @@ class Batalha:
     def turno_jogador(self):
 
         print(f"""
-Seu turno:
+
+================================
 
 {self.jogador.nome}
- {self.jogador.vida}
+Vida: {self.jogador.vida}
+Mana: {self.jogador.mana}
 
-Inimigo:
+------------------------------
+
 {self.monstro.nome}
- {self.monstro.vida}
+Vida: {self.monstro.vida}
 
+================================
 
 1 - Atacar
-2 - Mostrar status
+2 - Habilidades
+3 - Status
+
 """)
 
         escolha = input("Escolha: ")
@@ -48,9 +54,14 @@ Inimigo:
         elif escolha == "2":
 
             self.usar_habilidade()
+
+        elif escolha == "3":
+
+            self.jogador.mostrar_status()
+
         else:
 
-            print("Ação inválida")
+            print("Ação inválida.")
 
     def turno_monstro(self):
 
@@ -63,7 +74,10 @@ Inimigo:
         if self.jogador.esta_vivo():
 
             print(f"""
- Vitória!
+
+====================
+
+Vitória!
 
 Você derrotou:
 {self.monstro.nome}
@@ -71,48 +85,94 @@ Você derrotou:
 XP recebido:
 {self.monstro.xp}
 
-Ouro:
+Ouro recebido:
 {self.monstro.ouro}
+
+====================
+
 """)
+
+            self.jogador.ganhar_xp(self.monstro.xp)
 
         else:
 
             print("""
- Derrota...
+
+====================
+
+Derrota...
 
 Seu herói caiu.
+
+====================
+
 """)
 
     def usar_habilidade(self):
 
-        print("\nHabilidades:")
+        habilidades = list(self.jogador.habilidades.keys())
 
-        for habilidade in self.jogador.habilidades:
+        if not habilidades:
 
-            print(habilidade)
+            print("Nenhuma habilidade disponível.")
 
-        escolha = input("Escolha: ")
+            return
 
-        if escolha == "Golpe Pesado":
+        print("\n=== HABILIDADES ===\n")
 
-            dano = self.jogador.forca * 3
+        for i, habilidade in enumerate(habilidades):
 
-            print("Golpe Pesado!")
+            dados = self.jogador.habilidades[habilidade]
+
+            print(f"{i+1} - {habilidade} " f"(Mana: {dados.get('mana', 0)})")
+
+        try:
+
+            escolha = int(input("\nEscolha: ")) - 1
+
+            habilidade = habilidades[escolha]
+
+        except:
+
+            print("Opção inválida.")
+            return
+
+        dados = self.jogador.habilidades[habilidade]
+
+        custo_mana = dados.get("mana", 0)
+
+        if self.jogador.mana < custo_mana:
+
+            print("Mana insuficiente.")
+
+            return
+
+        self.jogador.mana -= custo_mana
+
+        if "dano" in dados:
+
+            atributo_principal = max(
+                self.jogador.forca, self.jogador.agilidade, self.jogador.inteligencia
+            )
+
+            dano = atributo_principal * dados["dano"]
+
+            print(f"\n{self.jogador.nome} usou {habilidade}!")
 
             self.monstro.receber_dano(dano)
 
-        elif escolha == "Bola de Fogo":
+        elif "cura" in dados:
 
-            if self.jogador.mana < 20:
+            cura = dados["cura"]
 
-                print("Mana insuficiente")
+            self.jogador.vida += cura
 
-                return
+            print(f"\n{self.jogador.nome} recuperou {cura} pontos de vida!")
 
-            dano = self.jogador.inteligencia * 4
+        elif "defesa" in dados:
 
-            self.jogador.mana -= 20
+            bonus = dados["defesa"]
 
-            print("Bola de Fogo!")
+            self.jogador.defesa += bonus
 
-            self.monstro.receber_dano(dano)
+            print(f"\n{self.jogador.nome} aumentou sua defesa em {bonus}!")
