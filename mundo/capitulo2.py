@@ -1,6 +1,11 @@
 from combate.batalha import Batalha
 from combate.monstros import Goblin
 from combate.monstros import Lobo
+from utils.interface import limpar, capitulo, sucesso, aviso, info
+from utils.efeitos import escrever, pausa
+from utils.save import salvar
+from mundo.capitulo3 import Capitulo3
+from utils.escolhas import escolher
 
 
 class Capitulo2:
@@ -10,6 +15,10 @@ class Capitulo2:
         self.jogador = jogador
 
     def iniciar(self):
+
+        self.jogador.capitulo_atual = 2
+
+        salvar(self.jogador)
 
         caminho = self.jogador.escolhas.get("caminho")
 
@@ -47,114 +56,129 @@ class Capitulo2:
 
     def acampamento_bandido(self):
 
-        print("""
+        limpar()
 
-CAPÍTULO 2
+        capitulo(2, "O Acampamento Abandonado")
 
-Você segue a fumaça.
+        escrever("Você segue a fumaça.")
+        pausa(1)
 
-Entre as árvores existe um pequeno
-acampamento abandonado.
+        escrever("Entre as árvores existe um pequeno acampamento abandonado.")
+        pausa(1)
 
-De repente um saqueador aparece.
-
-""")
+        aviso("Um saqueador aparece!")
+        pausa(1)
 
         batalha = Batalha(self.jogador, Goblin())
 
         batalha.iniciar()
 
         if not self.jogador.esta_vivo():
+
             return
 
-        print("""
+        sucesso("Após a luta você encontra algumas moedas.")
+        sucesso("Você encontra um mapa antigo.")
 
-Após a luta você encontra
-algumas moedas e um mapa.
+        self.jogador.ouro += 20
 
-Fim do Capítulo 2.
+        info("+20 Ouro")
 
-""")
+        pausa(2)
+
+        Capitulo3(self.jogador).iniciar()
 
     def mercador_perdido(self):
 
-        print("""
+        limpar()
 
-CAPÍTULO 2
+        capitulo(2, "O Mercador Perdido")
 
-Seguindo a estrada você encontra
-um mercador com a carroça quebrada.
+        escrever("Seguindo a estrada você encontra um mercador.")
+        pausa(1)
 
-""")
+        escrever("A carroça dele está quebrada.")
 
-        print("""
-1 - Ajudar
-2 - Ignorar
-""")
+        print()
 
-        escolha = input("Escolha: ")
+        info("1 - Ajudar")
+        info("2 - Ignorar")
+
+        while True:
+
+            escolha = escolher(self.jogador, ["1", "2"])
+
+            if escolha in ["1", "2"]:
+
+                break
+
+            aviso("Escolha apenas 1 ou 2.")
 
         if escolha == "1":
 
-            print("""
+            sucesso("Você ajuda o mercador.")
+            sucesso("Ele lhe entrega uma poção de vida.")
 
-O mercador agradece.
-
-Você recebe uma recompensa.
-
-""")
+            self.jogador.adicionar_item("Poção de Vida")
 
         else:
 
-            print("""
+            escrever("Você continua sua viagem sozinho.")
 
-Você continua viagem sozinho.
+        pausa(2)
 
-""")
+        Capitulo3(self.jogador).iniciar()
 
     def santuario_antigo(self):
 
-        print("""
+        limpar()
 
-CAPÍTULO 2
+        capitulo(2, "Santuário Esquecido")
 
-A passagem iluminada leva a um
-santuário esquecido.
+        escrever("A passagem iluminada leva a um santuário antigo.")
+        pausa(1)
 
-No centro existe um altar.
-
-""")
+        escrever("No centro existe um altar coberto por runas.")
+        pausa(1)
 
         self.jogador.mana += 20
 
-        print("""
-Sua mana aumentou em 20.
-""")
+        if self.jogador.mana > self.jogador.mana_maxima:
+
+            self.jogador.mana = self.jogador.mana_maxima
+
+        sucesso("Sua energia foi restaurada.")
+
+        info("+20 Mana")
+
+        pausa(2)
+
+        Capitulo3(self.jogador).iniciar()
 
     def tunel_profundo(self):
 
-        print("""
+        limpar()
 
-CAPÍTULO 2
+        capitulo(2, "Túnel Profundo")
 
-Você segue pela escuridão.
+        escrever("Você segue pela escuridão.")
+        pausa(1)
 
-Um lobo faminto surge do túnel.
-
-""")
+        aviso("Um lobo faminto surge do túnel!")
+        pausa(1)
 
         batalha = Batalha(self.jogador, Lobo())
 
         batalha.iniciar()
 
         if not self.jogador.esta_vivo():
+
             return
 
-        print("""
+        sucesso("Após a vitória você encontra uma enorme porta de pedra.")
 
-Após a vitória você encontra
-uma estranha porta de pedra.
+        escrever("Símbolos estranhos cobrem sua superfície.")
 
-Fim do Capítulo 2.
+        pausa(2)
 
-""")
+        Capitulo3(self.jogador).iniciar()

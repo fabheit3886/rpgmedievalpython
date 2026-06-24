@@ -1,6 +1,11 @@
 from combate.monstros import Goblin
 from combate.monstros import Lobo
 from combate.batalha import Batalha
+from mundo.capitulo2 import Capitulo2
+from utils.interface import titulo, limpar, sucesso, aviso, info, capitulo
+from utils.save import salvar
+from utils.efeitos import escrever, pausa
+from utils.escolhas import escolher
 
 
 class Capitulo1:
@@ -13,33 +18,33 @@ class Capitulo1:
 
         while True:
 
-            escolha = input("\nEscolha: ")
+            escolha = escolher(self.jogador, ["1", "2"])
 
             if escolha in opcoes:
 
                 return escolha
 
-            print(
-                f"\nOpção inválida. Escolha uma das opções: {', '.join(opcoes)}"
-            )
+            aviso(f"Escolha apenas: {', '.join(opcoes)}")
 
     def iniciar(self):
+        self.jogador.capitulo_atual = 1
+        salvar(self.jogador)
+        capitulo(1, "A encruzilhada")
 
-        print("""
+        escrever("Após dias viajando, você chega a uma encruzilhada.")
 
-CAPÍTULO 1
+        pausa(1)
 
-Após dias viajando,
-você chega a uma encruzilhada.
+        escrever("À esquerda existe uma floresta.")
 
-À esquerda existe uma floresta.
+        pausa(1)
 
-À direita existe uma caverna.
+        escrever("À direita existe uma caverna.")
 
-""")
+        print()
 
-        print("1 - Floresta")
-        print("2 - Caverna")
+        info("1 - Floresta")
+        info("2 - Caverna")
 
         escolha = self.escolher(["1", "2"])
 
@@ -55,40 +60,45 @@ você chega a uma encruzilhada.
 
         self.jogador.escolhas["caminho"] = "floresta"
 
-        print("""
+        limpar()
 
-Você segue pela floresta.
+        titulo("FLORESTA")
 
-Após alguns minutos,
-ouve passos entre as árvores.
+        escrever("Você segue pela floresta.")
 
-Um lobo salta dos arbustos!
+        pausa(1)
 
-""")
+        escrever("Após alguns minutos, ouve passos entre as árvores.")
 
-        monstro = Lobo()
+        pausa(1)
 
-        batalha = Batalha(
-            self.jogador,
-            monstro
-        )
+        aviso("Um lobo salta dos arbustos!")
+
+        pausa(1)
+
+        batalha = Batalha(self.jogador, Lobo())
 
         batalha.iniciar()
 
         if not self.jogador.esta_vivo():
+
             return
 
-        print("""
+        limpar()
 
-Após derrotar o lobo,
-você encontra uma estrada antiga.
+        titulo("APÓS A BATALHA")
 
-Ao longe, uma fumaça sobe entre as árvores.
+        escrever("Após derrotar o lobo, você encontra uma estrada antiga.")
 
-1 - Investigar a fumaça
-2 - Seguir pela estrada
+        pausa(1)
 
-""")
+        escrever("Ao longe, uma fumaça sobe entre as árvores.")
+
+        print()
+
+        info("1 - Investigar a fumaça")
+
+        info("2 - Seguir pela estrada")
 
         escolha = self.escolher(["1", "2"])
 
@@ -96,63 +106,59 @@ Ao longe, uma fumaça sobe entre as árvores.
 
             self.jogador.escolhas["floresta"] = "fumaca"
 
-            print("""
-
-Você segue em direção à fumaça.
-
-Continua no Capítulo 2...
-
-""")
-
-        elif escolha == "2":
+        else:
 
             self.jogador.escolhas["floresta"] = "estrada"
 
-            print("""
+        pausa(1)
 
-Você segue pela estrada.
+        capitulo = Capitulo2(self.jogador)
 
-Continua no Capítulo 2...
-
-""")
+        capitulo.iniciar()
 
     def caminho_caverna(self):
 
         self.jogador.escolhas["caminho"] = "caverna"
 
-        print("""
+        limpar()
 
-Você entra na caverna.
+        titulo("CAVERNA")
 
-O ar é frio e úmido.
+        escrever("Você entra na caverna.")
 
-Algo se move na escuridão.
+        pausa(1)
 
-Um goblin aparece!
+        escrever("O ar é frio e úmido.")
 
-""")
+        pausa(1)
 
-        monstro = Goblin()
+        escrever("Algo se move na escuridão.")
 
-        batalha = Batalha(
-            self.jogador,
-            monstro
-        )
+        pausa(1)
+
+        aviso("Um goblin aparece!")
+
+        pausa(1)
+
+        batalha = Batalha(self.jogador, Goblin())
 
         batalha.iniciar()
 
         if not self.jogador.esta_vivo():
+
             return
 
-        print("""
+        limpar()
 
-Após derrotar o goblin,
-você encontra duas passagens.
+        titulo("APÓS A BATALHA")
 
-1 - Seguir pela passagem iluminada
-2 - Seguir pela passagem escura
+        escrever("Após derrotar o goblin, você encontra duas passagens.")
 
-""")
+        print()
+
+        info("1 - Seguir pela passagem iluminada")
+
+        info("2 - Seguir pela passagem escura")
 
         escolha = self.escolher(["1", "2"])
 
@@ -160,18 +166,12 @@ você encontra duas passagens.
 
             self.jogador.escolhas["caverna"] = "iluminada"
 
-            from mundo.capitulo2 import Capitulo2
-            capitulo = Capitulo2(
-                self.jogador
-            )
-            capitulo.iniciar()
-
-        elif escolha == "2":
+        else:
 
             self.jogador.escolhas["caverna"] = "escura"
 
-            from mundo.capitulo2 import Capitulo2
-            capitulo = Capitulo2(
-                self.jogador
-            )
-            capitulo.iniciar()
+        pausa(1)
+
+        capitulo = Capitulo2(self.jogador)
+
+        capitulo.iniciar()

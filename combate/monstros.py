@@ -4,8 +4,8 @@ class Monstro:
 
         self.nome = nome
 
-        self.vida = vida
-        self.vida_max = vida
+        self.vida_maxima = vida
+        self.vida = self.vida_maxima
 
         self.ataque = ataque
         self.defesa = defesa
@@ -56,36 +56,28 @@ class Monstro:
 Nível:
 {self.nivel}
 """)
+
+
 class Goblin(Monstro):
 
-
     def __init__(self):
 
         super().__init__(
-            nome="Goblin",
-            vida=50,
-            ataque=10,
-            defesa=3,
-            nivel=1,
-            xp=20,
-            ouro=10
+            nome="Goblin", vida=50, ataque=10, defesa=3, nivel=1, xp=20, ouro=10
         )
+        self.vida = self.vida_maxima
+
+
 class Lobo(Monstro):
 
-
     def __init__(self):
 
         super().__init__(
-            nome="Lobo Selvagem",
-            vida=80,
-            ataque=15,
-            defesa=5,
-            nivel=2,
-            xp=40,
-            ouro=20
+            nome="Lobo Selvagem", vida=80, ataque=15, defesa=5, nivel=2, xp=40, ouro=20
         )
-class Dragao(Monstro):
 
+
+class Dragao(Monstro):
 
     def __init__(self):
 
@@ -96,34 +88,28 @@ class Dragao(Monstro):
             defesa=15,
             nivel=10,
             xp=500,
-            ouro=200
+            ouro=200,
         )
+
+
 class Urso(Monstro):
 
-     def __init__(self):
+    def __init__(self):
 
         super().__init__(
-            nome="Urso Tibers",
-            vida=180,
-            ataque=24,
-            defesa=10,
-            nivel=6,
-            xp=200,
-            ouro=60
+            nome="Urso Tibers", vida=180, ataque=24, defesa=10, nivel=6, xp=200, ouro=60
         )
+
+
 class Monge(Monstro):
 
-     def __init__(self):
+    def __init__(self):
 
         super().__init__(
-            nome="Monge cego",
-            vida=120,
-            ataque=18,
-            defesa=8,
-            nivel=4,
-            xp=80,
-            ouro=35
+            nome="Monge cego", vida=120, ataque=18, defesa=8, nivel=4, xp=80, ouro=35
         )
+
+
 class Troglodita(Monstro):
 
     def __init__(self):
@@ -135,5 +121,5 @@ class Troglodita(Monstro):
             defesa=20,
             nivel=12,
             xp=600,
-            ouro=260
+            ouro=260,
         )
