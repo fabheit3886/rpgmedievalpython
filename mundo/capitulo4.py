@@ -4,7 +4,7 @@ from utils.efeitos import escrever, pausa
 from cidade.ferreiro import Ferreiro
 from combate.batalha import Batalha
 from combate.chefe import GuardiaoArkan
-
+from utils.save import salvar
 
 class Capitulo4:
 
@@ -13,7 +13,8 @@ class Capitulo4:
         self.jogador = jogador
 
     def iniciar(self):
-
+        self.jogador.capitulo_atual = 4
+        salvar(self.jogador)
         capitulo(4, "As Ruínas de Arkan")
 
         escrever("Dias após deixar Eldoria...")

@@ -10,7 +10,7 @@ class Guerreiro(Personagem):
         self.vida += 50
         self.defesa += 10
 
-        self.habilidades["Golpe Pesado"] = {"dano": 3, "mana": 0}
+        self.habilidades["Golpe Pesado"] = {"dano": 3, "mana": 5}
 
         self.habilidades["Bloqueio"] = {"defesa": 10, "mana": 0}
 

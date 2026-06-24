@@ -63,7 +63,7 @@ class Goblin(Monstro):
     def __init__(self):
 
         super().__init__(
-            nome="Goblin", vida=50, ataque=10, defesa=3, nivel=1, xp=20, ouro=10
+            nome="Goblin", vida=50, ataque=20, defesa=3, nivel=1, xp=20, ouro=10
         )
         self.vida = self.vida_maxima
 
@@ -73,7 +73,7 @@ class Lobo(Monstro):
     def __init__(self):
 
         super().__init__(
-            nome="Lobo Selvagem", vida=80, ataque=15, defesa=5, nivel=2, xp=40, ouro=20
+            nome="Lobo Selvagem", vida=80, ataque=25, defesa=5, nivel=2, xp=40, ouro=20
         )
 
 

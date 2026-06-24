@@ -6,7 +6,7 @@ from mundo.capitulo4 import Capitulo4
 from utils.escolhas import escolher
 from utils.interface import capitulo
 from utils.efeitos import escrever
-
+from utils.save import salvar
 
 class Capitulo3:
 
@@ -15,7 +15,8 @@ class Capitulo3:
         self.jogador = jogador
 
     def iniciar(self):
-
+        self.jogador.capitulo_atual = 3
+        salvar(self.jogador)
         capitulo(3, "Eldoria")
 
         escrever(

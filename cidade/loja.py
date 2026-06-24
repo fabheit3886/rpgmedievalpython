@@ -22,13 +22,13 @@ LOJA DE ROLAND
 2 - Poção de Mana - 20 ouro
 3 - Elixir Maior - 40 ouro
 
-0 - Sair
+4 - Sair
 
 """)
 
             escolha = escolher(jogador, ["1", "2", "3", "4"])
 
-            if escolha == "0":
+            if escolha == "4":
 
                 break
 
